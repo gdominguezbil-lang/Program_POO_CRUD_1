@@ -151,6 +151,11 @@ public class UsuarioAPP {
 	}
 	
 	public static void nuevoUsuario(ArrayList<Usuario> usuarioList, Scanner sc) {
-		
+		String introd = "";
+		System.out.println("¡Bienvenido al gestor de usuarios!");
+		Usuario usuario = new Usuario();
+		System.out.println("Introduce tu nombre;");
+		usuario.set
+		usuarioList.add()
 	}
 }
