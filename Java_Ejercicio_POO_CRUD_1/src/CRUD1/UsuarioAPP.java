@@ -48,7 +48,7 @@ public class UsuarioAPP {
 			do {
 				System.out.println(
 						"====MENÚ====\n[1] = Mostrar tu usuario\n[2] = Mostrar todos los usuarios\n[3] = Borrar usuario\n[4] = Crear usuario nuevo\n[5] = "
-								+ "Crear un usuario con contraseña y activo por defecto\n[6] = editar el nombreUsuario y contraseña\n[7] = Guardar\n[8] = Salir");
+								+ "Crear un usuario con contraseña y activo por defecto\n[6] = Editar el nombreUsuario y contraseña\n[7] = Guardar\n[8] = Salir");
 				numeritos = Integer.parseInt(sc.nextLine());
 
 				switch (numeritos) {
@@ -86,6 +86,7 @@ public class UsuarioAPP {
 					break;
 
 				default:
+					System.out.println("[!] ERROR: Introduzca una opción correcta");
 				}
 			} while (numeritos != 8);
 			sc.close();
@@ -96,28 +97,38 @@ public class UsuarioAPP {
 
 	public static void mostrarUsuario(ArrayList<Usuario> usuarioList, Scanner sc, int cant) {
 		String introd = "";
+		boolean valid = false;
 		System.out.println("Introduzca su nombre: ");
 		introd = sc.nextLine();
 		for (int i = 0; i < usuarioList.size(); i++) {
 			if (introd.equalsIgnoreCase(usuarioList.get(i).getNombre())) {
-				do {
-					System.out.println("Introduce la contraseña: ");
-					introd = sc.nextLine();
-					if (introd.equals(usuarioList.get(i).getContras())) {
-						break;
-					}
-					System.out.println("[!] ERROR: Contrasña incorrecta\n");
-				} while (!introd.equals(usuarioList.get(i).getContras()));
-				System.out.println("¡Bienvenido! " + usuarioList.get(i).getNombre() + ", estos son tus datos:\n");
-				System.out.println("ID: " + usuarioList.get(i).getId());
-				System.out.println("Nombre y Apellidos: " + usuarioList.get(i).getNombre() + " "
-						+ usuarioList.get(i).getApellido());
-				System.out.println("Nombre de usuario: " + usuarioList.get(i).getNombreUsuario());
+				valid = true;
 				if (usuarioList.get(i).isActivo() == true) {
+					do {
+						System.out.println("Introduce la contraseña: ");
+						introd = sc.nextLine();
+						if (introd.equals(usuarioList.get(i).getContras())) {
+							break;
+						}
+						System.out.println("[!] ERROR: Contrasña incorrecta\n");
+					} while (!introd.equals(usuarioList.get(i).getContras()));
 
-				} else if (usuarioList.get(i).isActivo() == false)
-					System.out.println("Actividad: " + usuarioList.get(i).isActivo());
+					System.out.println("Nombre de usuario: " + usuarioList.get(i).getNombreUsuario());
+					if (usuarioList.get(i).isActivo() == true) {
+						System.out.println("¡Bienvenido! " + usuarioList.get(i).getNombre() + ", estos son tus datos:\n");
+						System.out.println("ID: " + usuarioList.get(i).getId());
+						System.out.println("Nombre y Apellidos: " + usuarioList.get(i).getNombre() + " "
+								+ usuarioList.get(i).getApellido());
+					} else if (usuarioList.get(i).isActivo() == false) {
+						System.out.println("[?] AVISO: Esta cuenta esá desactivada...");
+					}
+				} else if (usuarioList.get(i).isActivo() == false) {
+					System.out.println("[?] AVISO: Esta cuenta esá desactivada...");
+				}
 			}
+		}
+		if (valid == false) {
+			System.out.println("[!] ERROR: No existe ese usuario...");
 		}
 	}
 
@@ -140,15 +151,16 @@ public class UsuarioAPP {
 				if (sOn == 's' || sOn == 'n' || sOn == 'S' || sOn == 'N') {
 					if (sOn == 's' || sOn == 'S') {
 						usuarioList.remove(i);
+						System.out.println("[?] AVISO: Eliminando la cuenta...");
 						break;
 					} else {
-						System.out.println("Abortando el borrado de usuario...");
+						System.out.println("[?] AVISO: Abortando el borrado de usuario...");
 						break;
 					}
 				}
 
 			} else {
-				System.out.println("Introduce un nombre correcto");
+				System.out.println("[!] ERROR: Introduce un nombre correcto");
 				break;
 			}
 		}
@@ -170,6 +182,7 @@ public class UsuarioAPP {
 		nuevoUsuario.setActivo(true);
 
 		usuarioList.add(nuevoUsuario);
+		System.out.println("[?] AVISO: Nuevo usuario creado: " + nuevoUsuario.getNombre());
 		System.out.println(nuevoUsuario.toString());
 	}
 
@@ -188,45 +201,51 @@ public class UsuarioAPP {
 		Usuario nuevoUsuario = new Usuario(id, nombre, apellido);
 
 //		System.out.println(nuevoUsuario.toString());
+		System.out.println("[?] AVISO: Nuevo usuario creado: " + nuevoUsuario.getNombre());
 		usuarioList.add(nuevoUsuario);
 	}
-	
+
 	public static void editarContrayUsuario(ArrayList<Usuario> usuarioList, Scanner sc) {
 		String introd = "";
 		@SuppressWarnings("unused")
 		boolean valid = false;
 		System.out.println("¿Que usuario debería cambiar?");
 		introd = sc.nextLine();
-		
+
 		for (int i = 0; i < usuarioList.size(); i++) {
-			if(introd.equalsIgnoreCase(usuarioList.get(i).getNombre())) {
+			if (introd.equalsIgnoreCase(usuarioList.get(i).getNombre())) {
 				valid = true;
-				System.out.println("Introduce tu nuevo nombre de usuario (Anterior: " + usuarioList.get(i).getNombreUsuario() + ")");
+				System.out.println("Introduce tu nuevo nombre de usuario (Anterior: "
+						+ usuarioList.get(i).getNombreUsuario() + ")");
 				usuarioList.get(i).setNombreUsuario(sc.nextLine());
 				System.out.println("Introduce tu nueva contraseña (Anterior: " + usuarioList.get(i).getContras() + ")");
 				usuarioList.get(i).setContras(sc.nextLine());
 				System.out.println("Nuevas características: " + usuarioList.get(i).toString());
+				System.out.println("[?] AVISO: Edición hecha correctamente (recuerda guardar los cambios)");
 			}
 		}
-		if(valid = false) {
+		if (valid = false) {
 			System.out.println("[!] ERROR: No se ha encontrado ningún usuario con ese nombre...");
 		}
 	}
-	
-	public static void guardarCambios(ArrayList<Usuario> usuarioList, Scanner sc, File file) throws FileNotFoundException {
+
+	public static void guardarCambios(ArrayList<Usuario> usuarioList, Scanner sc, File file)
+			throws FileNotFoundException {
 		PrintWriter pw = new PrintWriter(file);
 		int numerocuestion = 1;
-		
-		for(int i = 0; i < usuarioList.size(); i++) {
-			if(usuarioList.get(i).isActivo() == true) {
+
+		for (int i = 0; i < usuarioList.size(); i++) {
+			if (usuarioList.get(i).isActivo() == true) {
 				numerocuestion = 1;
-			} else if(usuarioList.get(i).isActivo() == false) {
+			} else if (usuarioList.get(i).isActivo() == false) {
 				numerocuestion = 0;
 			}
-			pw.println(usuarioList.get(i).getId() + ":" + usuarioList.get(i).getNombre() + ":" + usuarioList.get(i).getApellido() + 
-					":" + usuarioList.get(i).getContras() + ":" + numerocuestion + ":" + usuarioList.get(i).getNombreUsuario());
+			pw.println(usuarioList.get(i).getId() + ":" + usuarioList.get(i).getNombre() + ":"
+					+ usuarioList.get(i).getApellido() + ":" + usuarioList.get(i).getContras() + ":" + numerocuestion
+					+ ":" + usuarioList.get(i).getNombreUsuario());
 		}
-		
 		pw.close();
+		System.out.println("[?] AVISO: Datos modificados guardados...");
+
 	}
 }
