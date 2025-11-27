@@ -66,15 +66,19 @@ public class UsuarioAPP {
 					break;
 
 				case 4:
+					nuevoUsuario(usuarioList, sc);
 					break;
 
 				case 5:
+					nuevoUsuarioDefecto(usuarioList, sc);
 					break;
 
 				case 6:
+					editarContrayUsuario(usuarioList, sc);
 					break;
 
 				case 7:
+					guardarCambios(usuarioList, sc, file);
 					break;
 
 				case 8:
@@ -92,9 +96,9 @@ public class UsuarioAPP {
 
 	public static void mostrarUsuario(ArrayList<Usuario> usuarioList, Scanner sc, int cant) {
 		String introd = "";
-		System.out.println("Introduzca su nombre de usuario: ");
+		System.out.println("Introduzca su nombre: ");
 		introd = sc.nextLine();
-		for (int i = 0; i < cant; i++) {
+		for (int i = 0; i < usuarioList.size(); i++) {
 			if (introd.equalsIgnoreCase(usuarioList.get(i).getNombre())) {
 				do {
 					System.out.println("Introduce la contraseña: ");
@@ -126,10 +130,10 @@ public class UsuarioAPP {
 	public static void borrarUsuario(ArrayList<Usuario> usuarioList, Scanner sc, int cant) {
 		String introd = "";
 		char sOn;
-		System.out.println("Introduzca el nombre de usuario que quiera deshabilitar: ");
+		System.out.println("Introduzca el nombre de usuario que quiera eliminar: ");
 		introd = sc.nextLine();
 
-		for (int i = 0; i < cant; i++) {
+		for (int i = 0; i < usuarioList.size(); i++) {
 			if (introd.equalsIgnoreCase(usuarioList.get(i).getNombre())) {
 				System.out.println("Seguro que quiere eliminar el usuario? (s/n)");
 				sOn = sc.nextLine().charAt(0);
@@ -149,13 +153,80 @@ public class UsuarioAPP {
 			}
 		}
 	}
-	
+
 	public static void nuevoUsuario(ArrayList<Usuario> usuarioList, Scanner sc) {
-		String introd = "";
 		System.out.println("¡Bienvenido al gestor de usuarios!");
-		Usuario usuario = new Usuario();
-		System.out.println("Introduce tu nombre;");
-		usuario.set
-		usuarioList.add()
+		Usuario nuevoUsuario = new Usuario();
+		System.out.println("Introduce tu ID: ");
+		nuevoUsuario.setId(Integer.parseInt(sc.nextLine()));
+		System.out.println("Introduce tu primer apellido: ");
+		nuevoUsuario.setApellido(sc.nextLine());
+		System.out.println("Introduce tu nombre: ");
+		nuevoUsuario.setNombre(sc.nextLine());
+		System.out.println("Introduce tu nombre de usuario");
+		nuevoUsuario.setNombreUsuario(sc.nextLine());
+		System.out.println("Introduce tu contraseña: ");
+		nuevoUsuario.setContras(sc.nextLine());
+		nuevoUsuario.setActivo(true);
+
+		usuarioList.add(nuevoUsuario);
+		System.out.println(nuevoUsuario.toString());
+	}
+
+	public static void nuevoUsuarioDefecto(ArrayList<Usuario> usuarioList, Scanner sc) {
+		String nombre = "";
+		String apellido = "";
+		int id = 0;
+		System.out.println("¡Crear cuenta rápidamente!");
+		System.out.println("Introduzca su nombre: ");
+		nombre = sc.nextLine();
+		System.out.println("Introduzca su apellido: ");
+		apellido = sc.nextLine();
+		System.out.println("¿Cuál desea que sea su id de usuario?");
+		id = Integer.parseInt(sc.nextLine());
+
+		Usuario nuevoUsuario = new Usuario(id, nombre, apellido);
+
+//		System.out.println(nuevoUsuario.toString());
+		usuarioList.add(nuevoUsuario);
+	}
+	
+	public static void editarContrayUsuario(ArrayList<Usuario> usuarioList, Scanner sc) {
+		String introd = "";
+		@SuppressWarnings("unused")
+		boolean valid = false;
+		System.out.println("¿Que usuario debería cambiar?");
+		introd = sc.nextLine();
+		
+		for (int i = 0; i < usuarioList.size(); i++) {
+			if(introd.equalsIgnoreCase(usuarioList.get(i).getNombre())) {
+				valid = true;
+				System.out.println("Introduce tu nuevo nombre de usuario (Anterior: " + usuarioList.get(i).getNombreUsuario() + ")");
+				usuarioList.get(i).setNombreUsuario(sc.nextLine());
+				System.out.println("Introduce tu nueva contraseña (Anterior: " + usuarioList.get(i).getContras() + ")");
+				usuarioList.get(i).setContras(sc.nextLine());
+				System.out.println("Nuevas características: " + usuarioList.get(i).toString());
+			}
+		}
+		if(valid = false) {
+			System.out.println("[!] ERROR: No se ha encontrado ningún usuario con ese nombre...");
+		}
+	}
+	
+	public static void guardarCambios(ArrayList<Usuario> usuarioList, Scanner sc, File file) throws FileNotFoundException {
+		PrintWriter pw = new PrintWriter(file);
+		int numerocuestion = 1;
+		
+		for(int i = 0; i < usuarioList.size(); i++) {
+			if(usuarioList.get(i).isActivo() == true) {
+				numerocuestion = 1;
+			} else if(usuarioList.get(i).isActivo() == false) {
+				numerocuestion = 0;
+			}
+			pw.println(usuarioList.get(i).getId() + ":" + usuarioList.get(i).getNombre() + ":" + usuarioList.get(i).getApellido() + 
+					":" + usuarioList.get(i).getContras() + ":" + numerocuestion + ":" + usuarioList.get(i).getNombreUsuario());
+		}
+		
+		pw.close();
 	}
 }

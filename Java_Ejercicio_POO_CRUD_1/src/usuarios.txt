@@ -1,2 +1,4 @@
-1:mikel:badiola:1234:0
-2:aitor:azkarate:2323:1
+1:mikel:badiola:1234:1:mikel
+2:aitor:azkarate:2323:1:aitor
+3:Chiflas:Gondra:7756:1:Godrax756
+4:Dailos:Santana:5134:1:Glennikoitz
