@@ -54,15 +54,15 @@ public class UsuarioAPP {
 				switch (numeritos) {
 
 				case 1:
-					mostrarUsuario(usuarioList, sc, cantidadUsuarios);
+					mostrarUsuario(usuarioList, sc);
 					break;
 
 				case 2:
-					mostrarTodos(usuarioList, sc, cantidadUsuarios);
+					mostrarTodos(usuarioList, sc);
 					break;
 
 				case 3:
-					borrarUsuario(usuarioList, sc, cantidadUsuarios);
+					borrarUsuario(usuarioList, sc);
 					break;
 
 				case 4:
@@ -95,7 +95,7 @@ public class UsuarioAPP {
 		}
 	}
 
-	public static void mostrarUsuario(ArrayList<Usuario> usuarioList, Scanner sc, int cant) {
+	public static void mostrarUsuario(ArrayList<Usuario> usuarioList, Scanner sc) {
 		String introd = "";
 		boolean valid = false;
 		System.out.println("Introduzca su nombre: ");
@@ -132,20 +132,22 @@ public class UsuarioAPP {
 		}
 	}
 
-	public static void mostrarTodos(ArrayList<Usuario> usuarioList, Scanner sc, int cant) {
+	public static void mostrarTodos(ArrayList<Usuario> usuarioList, Scanner sc) {
 		for (int i = 0; i < usuarioList.size(); i++) {
 			System.out.println(usuarioList.get(i).toString());
 		}
 	}
 
-	public static void borrarUsuario(ArrayList<Usuario> usuarioList, Scanner sc, int cant) {
+	public static void borrarUsuario(ArrayList<Usuario> usuarioList, Scanner sc) {
 		String introd = "";
+		boolean valid = false;
 		char sOn;
 		System.out.println("Introduzca el nombre de usuario que quiera eliminar: ");
 		introd = sc.nextLine();
 
 		for (int i = 0; i < usuarioList.size(); i++) {
 			if (introd.equalsIgnoreCase(usuarioList.get(i).getNombre())) {
+				valid = true;
 				System.out.println("Seguro que quiere eliminar el usuario? (s/n)");
 				sOn = sc.nextLine().charAt(0);
 				if (sOn == 's' || sOn == 'n' || sOn == 'S' || sOn == 'N') {
@@ -158,11 +160,10 @@ public class UsuarioAPP {
 						break;
 					}
 				}
-
-			} else {
-				System.out.println("[!] ERROR: Introduce un nombre correcto");
-				break;
 			}
+		}
+		if(valid==false) {
+			System.out.println("[!] ERROR: Usuario no encontrado.");
 		}
 	}
 
