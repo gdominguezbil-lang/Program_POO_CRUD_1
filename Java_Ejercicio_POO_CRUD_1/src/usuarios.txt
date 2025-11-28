@@ -1,3 +1,4 @@
-1:mikel:badiola:1234:1:mikel
-2:aitor:azkarate:2323:0:aitor
+1:mikel:badiola:1234:0:mikel
 4:Dailos:Santana:5134:1:Glennikoitz
+99:Paúl:Martín:6677:1:Paulsintilde
+98:aitor:Gómez:8899:1:asier

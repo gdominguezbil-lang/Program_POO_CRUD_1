@@ -115,7 +115,8 @@ public class UsuarioAPP {
 
 					System.out.println("Nombre de usuario: " + usuarioList.get(i).getNombreUsuario());
 					if (usuarioList.get(i).isActivo() == true) {
-						System.out.println("¡Bienvenido! " + usuarioList.get(i).getNombre() + ", estos son tus datos:\n");
+						System.out
+								.println("¡Bienvenido! " + usuarioList.get(i).getNombre() + ", estos son tus datos:\n");
 						System.out.println("ID: " + usuarioList.get(i).getId());
 						System.out.println("Nombre y Apellidos: " + usuarioList.get(i).getNombre() + " "
 								+ usuarioList.get(i).getApellido());
@@ -162,53 +163,94 @@ public class UsuarioAPP {
 				}
 			}
 		}
-		if(valid==false) {
+		if (valid == false) {
 			System.out.println("[!] ERROR: Usuario no encontrado.");
 		}
 	}
 
 	public static void nuevoUsuario(ArrayList<Usuario> usuarioList, Scanner sc) {
+		String introd = "";
+		int introdint;
+		boolean valid = false;
 		System.out.println("¡Bienvenido al gestor de usuarios!");
 		Usuario nuevoUsuario = new Usuario();
 		System.out.println("Introduce tu ID: ");
-		nuevoUsuario.setId(Integer.parseInt(sc.nextLine()));
-		System.out.println("Introduce tu primer apellido: ");
-		nuevoUsuario.setApellido(sc.nextLine());
+		introdint = Integer.parseInt(sc.nextLine());
+		for (int i = 0; i < usuarioList.size(); i++) {
+			if (introdint == usuarioList.get(i).getId()) {
+				valid = true;
+			}
+		}
 		System.out.println("Introduce tu nombre: ");
-		nuevoUsuario.setNombre(sc.nextLine());
-		System.out.println("Introduce tu nombre de usuario");
-		nuevoUsuario.setNombreUsuario(sc.nextLine());
-		System.out.println("Introduce tu contraseña: ");
-		nuevoUsuario.setContras(sc.nextLine());
-		nuevoUsuario.setActivo(true);
+		introd = sc.nextLine();
+		for (int i = 0; i < usuarioList.size(); i++) {
+			if (introd.equalsIgnoreCase(usuarioList.get(i).getNombre())) {
+				valid = true;
+			}
+		}
+		if (valid == true) {
+			System.out.println("[!] ERROR : No pueden haber dos nombres o dos IDs idénticas...");
+		} else {
+			nuevoUsuario.setId(introdint);
+			nuevoUsuario.setNombre(introd);
 
-		usuarioList.add(nuevoUsuario);
-		System.out.println("[?] AVISO: Nuevo usuario creado: " + nuevoUsuario.getNombre());
-		System.out.println(nuevoUsuario.toString());
+			System.out.println("Introduce tu primer apellido: ");
+			nuevoUsuario.setApellido(sc.nextLine());
+			nuevoUsuario.setNombre(sc.nextLine());
+			System.out.println("Introduce tu nombre de usuario");
+			nuevoUsuario.setNombreUsuario(sc.nextLine());
+			System.out.println("Introduce tu contraseña: ");
+			nuevoUsuario.setContras(sc.nextLine());
+			nuevoUsuario.setActivo(true);
+
+			usuarioList.add(nuevoUsuario);
+			System.out.println("[?] AVISO: Nuevo usuario creado: " + nuevoUsuario.getNombre());
+			System.out.println(nuevoUsuario.toString());
+		}
 	}
 
 	public static void nuevoUsuarioDefecto(ArrayList<Usuario> usuarioList, Scanner sc) {
 		String nombre = "";
 		String apellido = "";
+		boolean valid = true;
 		int id = 0;
 		System.out.println("¡Crear cuenta rápidamente!");
 		System.out.println("Introduzca su nombre: ");
 		nombre = sc.nextLine();
-		System.out.println("Introduzca su apellido: ");
-		apellido = sc.nextLine();
-		System.out.println("¿Cuál desea que sea su id de usuario?");
-		id = Integer.parseInt(sc.nextLine());
+		for (int i = 0; i < usuarioList.size(); i++) {
+			if (nombre.equalsIgnoreCase(usuarioList.get(i).getNombre())) {
+				valid = false;
+				break;
+			} else {
+				System.out.println("Introduzca su apellido: ");
+				apellido = sc.nextLine();
+				System.out.println("¿Cuál desea que sea su id de usuario?");
+				id = Integer.parseInt(sc.nextLine());
+				for (int j = 0; j < usuarioList.size(); j++) {
+					if (id == usuarioList.get(j).getId()) {
+						valid = false;
+						break;
+					}
+				}
+				if (valid == false) {
+					break;
+				}
+			}
+		}
+		if (valid == true) {
+			Usuario nuevoUsuario = new Usuario(id, nombre, apellido);
 
-		Usuario nuevoUsuario = new Usuario(id, nombre, apellido);
-
-//		System.out.println(nuevoUsuario.toString());
-		System.out.println("[?] AVISO: Nuevo usuario creado: " + nuevoUsuario.getNombre());
-		usuarioList.add(nuevoUsuario);
+//			System.out.println(nuevoUsuario.toString());
+			System.out.println("[?] AVISO: Nuevo usuario creado: " + nuevoUsuario.getNombre());
+			usuarioList.add(nuevoUsuario);
+		}
+		if (valid == false) {
+			System.out.println("[!] ERROR: No pueden haber dos nombres o dos IDs idénticos...");
+		}
 	}
 
 	public static void editarContrayUsuario(ArrayList<Usuario> usuarioList, Scanner sc) {
 		String introd = "";
-		@SuppressWarnings("unused")
 		boolean valid = false;
 		System.out.println("¿Que usuario debería cambiar?");
 		introd = sc.nextLine();
@@ -225,7 +267,7 @@ public class UsuarioAPP {
 				System.out.println("[?] AVISO: Edición hecha correctamente (recuerda guardar los cambios)");
 			}
 		}
-		if (valid = false) {
+		if (valid == false) {
 			System.out.println("[!] ERROR: No se ha encontrado ningún usuario con ese nombre...");
 		}
 	}
